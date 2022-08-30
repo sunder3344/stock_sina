@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 
     //printf("stock_num = %d\n", stock_num);
     char seperators = ';';
-    char * datum[STOCK_LINE+1];
+    char * datum[stock_num];
     explode(res, seperators, datum);
     int i;
     char * flag2 = "\"";
