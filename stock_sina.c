@@ -15,7 +15,7 @@ size_t write_data(char *ptr, size_t size, size_t nmemb, void *userdata) {
 	    strcpy(res, ptr);
     } else {
         res = (char *)realloc(res, sizeof(char) * (strlen(res) + strlen(ptr) + 1));
-        strncat(res, ptr, strlen(ptr));
+        strcat(res, ptr);
     }
 	//printf("res_callback:=%s\n", res);
 	return size * nmemb;
@@ -46,15 +46,17 @@ int main(int argc, char *argv[]) {
 			//printf("line:=%s, stockcode:=%s\n", line, stockcode);
 			if (stockcode == 0) {
 				stockcode = (char *)realloc(stockcode, sizeof(char) * (len + 1));
-				strncpy(stockcode, line, len - 1);
+                line[len - 1] = '\0';
+				strcpy(stockcode, line);
                 stock_num++;
 			} else {
 				int bigLen = strlen(stockcode);
 				stockcode = (char *)realloc(stockcode, sizeof(char) * (bigLen + 1));
-				strncat(stockcode, flag, 1);
+				strcat(stockcode, flag);
 				bigLen = strlen(stockcode);
 				stockcode = (char *)realloc(stockcode, sizeof(char) * (bigLen + len + 1));
-				strncat(stockcode, line, len - 1);
+                line[len - 1] = '\0';
+				strcat(stockcode, line);
                 stock_num++;
 			}
 		}
@@ -70,7 +72,7 @@ int main(int argc, char *argv[]) {
 	//printf("urlurlurl:=%s, len=%d\n\n", url, strlen(sector));
 	int urllen = strlen(url);
 	url = (char *)realloc(url, sizeof(char) * (urllen + strlen(stockcode) + 1));
-	strncat(url, stockcode, strlen(stockcode));
+	strcat(url, stockcode);
 	//printf("url:=%s\n", url);
 
 	struct curl_slist * head = NULL;
