@@ -57,12 +57,13 @@ void explode2(char * str, char seperator, char *data[]) {
 	}
 }
 
-void explode(char str[], char seperator, char *data[]) {
+void explode3(char str[], char seperator, char *data[]) {
 	int len = strlen(str);
 	//char * data[32];
 	int i;
 	int pre_flag = 0;
 	int count = 0;
+	//printf("===============%s============\n", str);
 	
 	//printf("data pointer = %p\n", data);
 	//printf("len = %d\n", len);
@@ -87,4 +88,15 @@ void explode(char str[], char seperator, char *data[]) {
 	if (pre_flag < len) {
 		data[count] = str + pre_flag;
 	}
+}
+
+
+void explode(char str[], char separator, char *data[], int amount) {
+    char *token = strtok(str, &separator);
+    int count = 0;
+
+    while (token != NULL && count < amount) {
+        data[count++] = strdup(token);  // Use strdup to duplicate the token
+        token = strtok(NULL, &separator);
+    }
 }

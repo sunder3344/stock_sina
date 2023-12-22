@@ -23,7 +23,7 @@ size_t write_data(char *ptr, size_t size, size_t nmemb, void *userdata) {
 
 int main(int argc, char *argv[]) {
 	res = (char *)malloc(sizeof(char) * 100000);
-    res = NULL;
+    //res = NULL;
 	//read stock code from config
 	FILE *fp = fopen("config_sina.ini", "r");
 	if (NULL == fp) {
@@ -91,12 +91,15 @@ int main(int argc, char *argv[]) {
     //printf("stock_num = %d\n", stock_num);
     char seperators = ';';
     char * datum[stock_num];
-    explode(res, seperators, datum);
     int i;
+	for (i = 0; i < stock_num; i++) {
+		datum[i] = (char *)malloc(sizeof(char) * 3000);
+	}
+    explode(res, seperators, datum, stock_num);
     char * flag2 = "\"";
     char seperator = ',';
     for (i = 0; i < stock_num; i++) {
-        //printf("%s\n", datum[i]);
+        //printf("datum:=%s\n", datum[i]);
         int pos = strcspn(datum[i], flag2);
         char * res2 = datum[i] + pos + 1;
         pos = strcspn(res2, flag2);
@@ -110,7 +113,7 @@ int main(int argc, char *argv[]) {
         //printf("%s\n", out);
     
         char * data[34];
-        explode(out, seperator, data);
+        explode(out, seperator, data, 34);
         //int j;
         //for (j = 0; j < 32; j++) {
         //        printf("data[%d] = %s\n", j, data[j]);
@@ -136,6 +139,7 @@ int main(int argc, char *argv[]) {
             printf("%-16s|%-13.2f|%-13.2f|%-13.2f|%-13.2f|%-16.2f|%-16.2f|%-16d|%-14.2f|\n", data[0],
                         current_price, rate, yesterday_price, init_price, top_price, end_price, deal_num, deal_amount);
         }
+		free(datum[i]);
     } 
 
     free(stockcode);
